@@ -50,7 +50,7 @@ namespace TrayApp
         {
             while (true)
             {
-                Thread.Sleep(3000); // Wait for 5 minutes
+                Thread.Sleep(300000); // Wait for 5 minutes
                 ShowStyledAlert();
             }
         }
