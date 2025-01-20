@@ -21,11 +21,12 @@ namespace TrayApp
             {
                 Icon = SystemIcons.Application,
                 Visible = true,
-                ContextMenuStrip = new ContextMenuStrip()
+                ContextMenuStrip = new ContextMenuStrip
+                {
+                    Items = { new ToolStripMenuItem("Exit", null, OnExit) }
+                },
+                Text = "Tray Alert App"
             };
-            
-            _notifyIcon.ContextMenuStrip.Items.Add("Exit", null, OnExit);
-            _notifyIcon.Text = "Tray Alert App";
 
             // Start the alert loop
             StartAlertLoop();
@@ -36,6 +37,7 @@ namespace TrayApp
 
         private static void StartAlertLoop()
         {
+            // Create a background thread for alerting
             _alertThread = new Thread(AlertLoop)
             {
                 IsBackground = true
@@ -48,14 +50,49 @@ namespace TrayApp
             while (true)
             {
                 Thread.Sleep(300000); // Wait for 5 minutes
-                ShowAlertMessage();
+                ShowStyledAlert();
             }
         }
 
-        private static void ShowAlertMessage()
+        private static void ShowStyledAlert()
         {
-            // Show a simple message box as the alert
-            MessageBox.Show("This is your alert message!", "Alert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Create and show a custom alert form
+            var alertForm = new Form
+            {
+                Width = 400,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterScreen,
+                FormBorderStyle = FormBorderStyle.None,
+                BackColor = Color.LightBlue,
+                TopMost = true
+            };
+
+            // Add a label with a message
+            var messageLabel = new Label
+            {
+                Text = "This is your styled alert message!",
+                AutoSize = true,
+                Font = new Font("Arial", 14, FontStyle.Bold),
+                ForeColor = Color.DarkBlue,
+                Location = new Point(50, 50)
+            };
+            alertForm.Controls.Add(messageLabel);
+
+            // Add a button to close the alert
+            var closeButton = new Button
+            {
+                Text = "Dismiss",
+                Font = new Font("Arial", 12, FontStyle.Regular),
+                BackColor = Color.White,
+                ForeColor = Color.Black,
+                Location = new Point(150, 120),
+                AutoSize = true
+            };
+            closeButton.Click += (s, e) => alertForm.Close();
+            alertForm.Controls.Add(closeButton);
+
+            // Show the alert form as a dialog
+            alertForm.ShowDialog();
         }
 
         private static void OnExit(object sender, EventArgs e)
