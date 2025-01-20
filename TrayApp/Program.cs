@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D; // Required for GraphicsPath
 using System.Threading;
 using System.Windows.Forms;
 
@@ -49,7 +50,7 @@ namespace TrayApp
         {
             while (true)
             {
-                Thread.Sleep(300000); // Wait for 5 minutes
+                Thread.Sleep(3000); // Wait for 5 minutes
                 ShowStyledAlert();
             }
         }
@@ -57,24 +58,24 @@ namespace TrayApp
         private static void ShowStyledAlert()
         {
             // Create and show a custom alert form
-            var alertForm = new Form
+            var alertForm = new RoundedForm
             {
-                Width = 400,
+                Width = 300,
                 Height = 200,
                 StartPosition = FormStartPosition.CenterScreen,
-                FormBorderStyle = FormBorderStyle.None,
-                BackColor = Color.LightBlue,
+                BackColor = Color.Red, // Red background for the alert
                 TopMost = true
             };
 
             // Add a label with a message
             var messageLabel = new Label
             {
-                Text = "This is your styled alert message!",
+                Text = "PLEASE FILL DETAILS!!",
                 AutoSize = true,
-                Font = new Font("Arial", 14, FontStyle.Bold),
-                ForeColor = Color.DarkBlue,
-                Location = new Point(50, 50)
+                Font = new Font("Segoe UI", 16, FontStyle.Bold), // Use a standard font
+                ForeColor = Color.White, // White text for contrast
+                Location = new Point(50, 70), // Adjusted for center alignment
+                BackColor = Color.Red // Match the background for seamless look
             };
             alertForm.Controls.Add(messageLabel);
 
@@ -82,12 +83,14 @@ namespace TrayApp
             var closeButton = new Button
             {
                 Text = "Dismiss",
-                Font = new Font("Arial", 12, FontStyle.Regular),
+                Font = new Font("Segoe UI", 12, FontStyle.Regular),
                 BackColor = Color.White,
-                ForeColor = Color.Black,
-                Location = new Point(150, 120),
-                AutoSize = true
+                ForeColor = Color.Red, // Red text on the button
+                Location = new Point(100, 130), // Center the button
+                AutoSize = true,
+                FlatStyle = FlatStyle.Flat // Flat style for better appearance
             };
+            closeButton.FlatAppearance.BorderSize = 0; // Remove button border
             closeButton.Click += (s, e) => alertForm.Close();
             alertForm.Controls.Add(closeButton);
 
@@ -100,6 +103,23 @@ namespace TrayApp
             // Clean up resources
             _notifyIcon.Visible = false;
             Application.Exit();
+        }
+    }
+
+    // Custom form class with rounded corners
+    public class RoundedForm : Form
+    {
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            GraphicsPath path = new GraphicsPath();
+            int radius = 20; // Radius for rounded corners
+            path.AddArc(0, 0, radius, radius, 180, 90); // Top-left corner
+            path.AddArc(Width - radius, 0, radius, radius, 270, 90); // Top-right corner
+            path.AddArc(Width - radius, Height - radius, radius, radius, 0, 90); // Bottom-right corner
+            path.AddArc(0, Height - radius, radius, radius, 90, 90); // Bottom-left corner
+            path.CloseFigure();
+            this.Region = new Region(path); // Set the region of the form to the rounded rectangle
         }
     }
 }
