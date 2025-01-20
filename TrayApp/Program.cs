@@ -60,10 +60,10 @@ namespace TrayApp
             // Create and show a custom alert form
             var alertForm = new RoundedForm
             {
-                Width = 300,
-                Height = 200,
+                Width = 350,
+                Height = 250,
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor = Color.White, // Red background for the alert
+                BackColor = Color.WhiteSmoke, // Red background for the alert
                 TopMost = true
             };
 
@@ -75,7 +75,7 @@ namespace TrayApp
                 Font = new Font("Segoe UI", 16, FontStyle.Bold), // Use a standard font
                 ForeColor = Color.Black, // White text for contrast
                 Location = new Point(50, 70), // Adjusted for center alignment
-                BackColor = Color.White // Match the background for seamless look
+                BackColor = Color.WhiteSmoke // Match the background for seamless look
             };
             alertForm.Controls.Add(messageLabel);
 
@@ -86,7 +86,7 @@ namespace TrayApp
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 BackColor = Color.Purple,
                 ForeColor = Color.WhiteSmoke, // Red text on the button
-                Location = new Point(100, 130), // Center the button
+                Location = new Point(130, 130), // Center the button
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat // Flat style for better appearance
             };
