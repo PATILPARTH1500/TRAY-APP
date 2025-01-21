@@ -63,8 +63,8 @@ namespace TrayApp
                 Width = 350,
                 Height = 250,
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor = Color.WhiteSmoke, // Red background for the alert
-                TopMost = true
+                BackColor = Color.WhiteSmoke, // Light background for the alert
+                TopMost = true // Ensure the form is on top of all other windows
             };
 
             // Add a label with a message
@@ -73,7 +73,7 @@ namespace TrayApp
                 Text = "PLEASE FILL DETAILS!!",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 16, FontStyle.Bold), // Use a standard font
-                ForeColor = Color.Black, // White text for contrast
+                ForeColor = Color.Black, // Black text for visibility
                 Location = new Point(50, 70), // Adjusted for center alignment
                 BackColor = Color.WhiteSmoke // Match the background for seamless look
             };
@@ -85,7 +85,7 @@ namespace TrayApp
                 Text = "Dismiss",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 BackColor = Color.Purple,
-                ForeColor = Color.WhiteSmoke, // Red text on the button
+                ForeColor = Color.WhiteSmoke, // Contrast text color
                 Location = new Point(130, 130), // Center the button
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat // Flat style for better appearance
@@ -94,7 +94,8 @@ namespace TrayApp
             closeButton.Click += (s, e) => alertForm.Close();
             alertForm.Controls.Add(closeButton);
 
-            // Show the alert form as a dialog
+            // Show the alert form as a dialog and activate it
+            alertForm.Shown += (s, e) => alertForm.Activate(); // Ensure the form is activated
             alertForm.ShowDialog();
         }
 
